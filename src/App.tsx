@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
-import { PropertyCoordinates } from './Data';
+import { BuildingPermits, PropertyCoordinates } from './Data';
 
 import './App.css';
 
@@ -15,18 +15,31 @@ function App() {
 
   const [points, setPoints] = useState([] as Point[]);
 
-  const loadCoordinates = async () => {
-    const res = await fetch(process.env.PUBLIC_URL + '/data/geo_coordinates.json');
-    const coordinates = await res.json() as PropertyCoordinates;
-    const points = Object.keys(coordinates).map((propertyId) => {
-      const { x, y } = coordinates[propertyId];
-      return { lat: x, lng: y, title: propertyId } as Point
+  const loadData = async () => {
+    const buildingPermits = await loadBuildingPermits();
+    const propertyCoordinates = await loadPropertyCoordinates();
+    const points = Object.keys(propertyCoordinates).map((propertyId) => {
+      const { x, y } = propertyCoordinates[propertyId];
+      const permit = Object.values(buildingPermits).find((permit) => permit.propertyId === propertyId);
+      return { lat: x, lng: y, title: permit?.description } as Point
     });
     setPoints(points);
   };
 
+  const loadBuildingPermits = async () => {
+    const res = await fetch(process.env.PUBLIC_URL + '/data/building_permits.json');
+    const permits = await res.json() as BuildingPermits;
+    return permits;
+  };
+
+  const loadPropertyCoordinates = async () => {
+    const res = await fetch(process.env.PUBLIC_URL + '/data/geo_coordinates.json');
+    const coordinates = await res.json() as PropertyCoordinates;
+    return coordinates;
+  };
+
   useEffect(() => {
-    loadCoordinates();
+    loadData();
   }, [])
 
   const Markers = ({ data } : { data: Point[] }) => {
