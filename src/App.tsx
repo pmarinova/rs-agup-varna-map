@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
-import { BuildingPermits, PropertyCoordinates } from './Data';
+import { BuildingPermit, PropertyCoordinates } from './Data';
 
 import './App.css';
 
@@ -20,7 +20,7 @@ function App() {
     const propertyCoordinates = await loadPropertyCoordinates();
     const points = Object.keys(propertyCoordinates).map((propertyId) => {
       const { x, y } = propertyCoordinates[propertyId];
-      const permit = Object.values(buildingPermits).find((permit) => permit.propertyId === propertyId);
+      const permit = buildingPermits.find((permit) => permit.propertyId === propertyId);
       return { lat: x, lng: y, title: permit?.description } as Point
     });
     setPoints(points);
@@ -28,7 +28,7 @@ function App() {
 
   const loadBuildingPermits = async () => {
     const res = await fetch(process.env.PUBLIC_URL + '/data/building_permits.json');
-    const permits = await res.json() as BuildingPermits;
+    const permits = await res.json() as BuildingPermit[];
     return permits;
   };
 

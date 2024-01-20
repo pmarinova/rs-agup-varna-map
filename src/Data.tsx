@@ -8,6 +8,7 @@ type PropertyCoordinates = {
 };
 
 type BuildingPermit = {
+    id: string;
     sequenceNumber: number;
     date: string;
     propertyId: string;
@@ -17,13 +18,8 @@ type BuildingPermit = {
     description: string;
 };
 
-type BuildingPermits = {
-    [id: string] : BuildingPermit;
-};
-
 export type {
     Coordinates,
     PropertyCoordinates,
-    BuildingPermit,
-    BuildingPermits
+    BuildingPermit
 };
