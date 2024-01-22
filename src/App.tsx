@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-
 import { BuildingPermit, PropertyCoordinates } from './Data';
-
+import { BuildingPermitsMap, BuildingPermitsMapData } from './Map';
 import './App.css';
-
-type Point = {
-  lat: number,
-  lng: number,
-  title: string
-};
 
 function App() {
 
-  const [points, setPoints] = useState([] as Point[]);
-
+  const [data, setData] = useState({ permits: [], coordinates: {}} as BuildingPermitsMapData);
+  
+  useEffect(() => {
+    loadData();
+  });
+  
   const loadData = async () => {
     const buildingPermits = await loadBuildingPermits();
     const propertyCoordinates = await loadPropertyCoordinates();
-    const points = Object.keys(propertyCoordinates).map((propertyId) => {
-      const { x, y } = propertyCoordinates[propertyId];
-      const permit = buildingPermits.find((permit) => permit.propertyId === propertyId);
-      return { lat: x, lng: y, title: permit?.description } as Point
+    setData({
+      permits: buildingPermits.filter(permit => propertyCoordinates[permit.propertyId]),
+      coordinates: propertyCoordinates
     });
-    setPoints(points);
   };
 
   const loadBuildingPermits = async () => {
@@ -37,34 +31,8 @@ function App() {
     const coordinates = await res.json() as PropertyCoordinates;
     return coordinates;
   };
-
-  useEffect(() => {
-    loadData();
-  }, [])
-
-  const Markers = ({ data } : { data: Point[] }) => {
-    return (
-      <>
-        {data.map(({ lat, lng, title }, index) => (
-          <Marker key={index} position={{ lat, lng }}>
-            <Popup>{title}</Popup>
-          </Marker>
-          ))}
-      </>
-    );
-  }
-
-  return (
-    <div id="map">
-      <MapContainer center={[43.2073873, 27.9166653]} zoom={12} scrollWheelZoom={true}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Markers data={points} />
-      </MapContainer>
-    </div>
-  );
+  
+  return <BuildingPermitsMap data={data} />;
 }
 
 export default App;
