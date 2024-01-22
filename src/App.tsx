@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Container } from '@mui/material';
 import { BuildingPermit, PropertyCoordinates } from './Data';
 import { BuildingPermitsMap, BuildingPermitsMapData } from './Map';
 import './App.css';
@@ -34,7 +35,11 @@ function App() {
 
   }, []);
   
-  return <BuildingPermitsMap data={data} />;
+  return (
+    <Container maxWidth={false} disableGutters>
+      <BuildingPermitsMap data={data} />
+    </Container>
+  );
 }
 
 export default App;
