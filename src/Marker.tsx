@@ -7,7 +7,7 @@ type BuildingPermitMarkerProps = {
 };
 
 const BuildingPermitMarker = ({ permit, coordinates }: BuildingPermitMarkerProps) => (
-    <Marker key={permit.id} position={{ lat: coordinates.x, lng: coordinates.y }}>
+    <Marker position={{ lat: coordinates.x, lng: coordinates.y }}>
         <Popup>{permit.description}</Popup>
     </Marker>
 );

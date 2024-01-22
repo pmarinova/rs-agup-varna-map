@@ -19,7 +19,11 @@ const BuildingPermitsMap = ({ data }: BuildingPermitsMapProps) => (
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {data.permits.map((permit) => (
-          <BuildingPermitMarker permit={permit} coordinates={data.coordinates[permit.propertyId]} />
+          <BuildingPermitMarker
+            key={permit.id}
+            permit={permit}
+            coordinates={data.coordinates[permit.propertyId]}
+          />
         ))}
       </MapContainer>
     </div>
