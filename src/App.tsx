@@ -18,10 +18,10 @@ const loadPropertyCoordinates = async () => {
 
 function App() {
 
-  const [data, setData] = useState({ permits: [], coordinates: {}} as BuildingPermitsMapData);
-  
+  const [data, setData] = useState({ permits: [], coordinates: {} } as BuildingPermitsMapData);
+
   useEffect(() => {
-    
+
     const loadData = async () => {
       const buildingPermits = await loadBuildingPermits();
       const propertyCoordinates = await loadPropertyCoordinates();
@@ -34,7 +34,7 @@ function App() {
     loadData();
 
   }, []);
-  
+
   return (
     <Container maxWidth={false} disableGutters>
       <BuildingPermitsMap data={data} />
