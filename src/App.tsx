@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
 import { Container } from '@mui/material';
-import { BuildingPermit, PropertyCoordinates } from './Data';
+
+import { loadBuildingPermits, loadPropertyCoordinates } from './Data';
 import { BuildingPermitsMap, BuildingPermitsMapData } from './Map';
+
 import './App.css';
-
-const loadBuildingPermits = async () => {
-  const res = await fetch(process.env.PUBLIC_URL + '/data/building_permits.json');
-  const permits = await res.json() as BuildingPermit[];
-  return permits;
-};
-
-const loadPropertyCoordinates = async () => {
-  const res = await fetch(process.env.PUBLIC_URL + '/data/geo_coordinates.json');
-  const coordinates = await res.json() as PropertyCoordinates;
-  return coordinates;
-};
 
 function App() {
 
-  const [data, setData] = useState({ permits: [], coordinates: {} } as BuildingPermitsMapData);
+  const [data, setData] = React.useState<BuildingPermitsMapData>({ permits: [], coordinates: {} });
 
-  useEffect(() => {
-
+  React.useEffect(() => {
     const loadData = async () => {
       const buildingPermits = await loadBuildingPermits();
       const propertyCoordinates = await loadPropertyCoordinates();
@@ -30,9 +20,7 @@ function App() {
         coordinates: propertyCoordinates
       });
     };
-
     loadData();
-
   }, []);
 
   return (
