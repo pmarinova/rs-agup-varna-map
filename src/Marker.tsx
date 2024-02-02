@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Typography from '@mui/material/Typography';
 import { Marker, Popup } from 'react-leaflet';
 import { BuildingPermit, Coordinates } from './Data';
 
@@ -10,7 +11,14 @@ type BuildingPermitMarkerProps = {
 
 const BuildingPermitMarker = ({ permit, coordinates }: BuildingPermitMarkerProps) => (
   <Marker position={{ lat: coordinates.x, lng: coordinates.y }}>
-    <Popup>{permit.description}</Popup>
+    <Popup>
+      <Typography variant="subtitle2">
+        Разрешение {permit.id}
+      </Typography>
+      <Typography variant="body2">
+        {permit.description}
+      </Typography>
+    </Popup>
   </Marker>
 );
 
