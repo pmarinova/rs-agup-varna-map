@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { BuildingPermit, PropertyCoordinates } from './Data';
 import { BuildingPermitMarker } from './Marker';

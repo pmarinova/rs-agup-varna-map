@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Marker, Popup } from 'react-leaflet';
 import { BuildingPermit, Coordinates } from './Data';
 
