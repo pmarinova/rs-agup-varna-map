@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
+
 import { BuildingPermit, PropertyCoordinates } from './Data';
 import { BuildingPermitMarker } from './Marker';
 
@@ -15,7 +16,8 @@ type BuildingPermitsMapProps = {
 
 const BuildingPermitsMap = ({ data }: BuildingPermitsMapProps) => (
   <div id="map">
-    <MapContainer center={[43.2073873, 27.9166653]} zoom={12} scrollWheelZoom={true}>
+    <MapContainer center={[43.2073873, 27.9166653]} zoom={12} scrollWheelZoom={true} zoomControl={false}>
+      <ZoomControl position={'topright'} />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
