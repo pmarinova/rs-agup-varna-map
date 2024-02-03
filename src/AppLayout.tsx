@@ -43,10 +43,11 @@ const FloatingButton = styled(Fab)(({ theme }) => ({
 
 
 type AppLayoutProps = {
-  children: React.ReactNode;
+  mainContent: React.ReactNode;
+  drawerContent: React.ReactNode;
 };
 
-const AppLayout = ({ children }: AppLayoutProps) => {
+const AppLayout = ({ mainContent, drawerContent }: AppLayoutProps) => {
 
   const appBarHeight = useAppBarHeight();
   
@@ -80,14 +81,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ flexGrow: 1, height: `calc(100vh - ${appBarHeight}px)` }}>
-        {children}
+        {mainContent}
       </Box>
       <FloatingButton color="primary" aria-label="filter" onClick={toggleDrawer}>
         <FilterAltIcon />
       </FloatingButton>
       <Drawer anchor="bottom" open={drawerOpen} onClose={toggleDrawer}>
         <Box sx={{ height: '40vh' }}>
-          
+          {drawerContent}
         </Box>
       </Drawer>
     </Container>

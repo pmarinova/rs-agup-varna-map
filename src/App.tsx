@@ -3,6 +3,7 @@ import React from 'react';
 import { AppLayout } from './AppLayout';
 import { loadBuildingPermits, loadPropertyCoordinates } from './Data';
 import { BuildingPermitsMap, BuildingPermitsMapData } from './Map';
+import { BuildingPermitsTable } from './Table';
 
 import './App.css';
 
@@ -22,10 +23,14 @@ function App() {
     loadData();
   }, []);
 
+  const mainContent = <BuildingPermitsMap data={data} />;
+  const drawerContent = <BuildingPermitsTable data={data} />;
+
   return (
-    <AppLayout>
-      <BuildingPermitsMap data={data} />
-    </AppLayout>
+    <AppLayout 
+      mainContent={mainContent}
+      drawerContent={drawerContent}
+    />
   );
 }
 
