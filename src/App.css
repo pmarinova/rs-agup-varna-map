@@ -1,3 +1,9 @@
+/* MUI table - disable blue outline on cell click */
+.MuiDataGrid-root .MuiDataGrid-columnHeader,
+.MuiDataGrid-root .MuiDataGrid-cell {
+  outline: none !important;
+}
+
 #map, #map .leaflet-container {
   width: 100%;
   height: 100%;

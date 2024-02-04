@@ -25,6 +25,7 @@ const BuildingPermitsTable = ({ data }: BuildingPermitsTableProps) => {
       columns={columns}
       rows={data.permits}
       density="compact"
+      disableRowSelectionOnClick
     />
   );
 };
