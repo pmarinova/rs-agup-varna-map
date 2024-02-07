@@ -1,9 +1,13 @@
 import React from 'react';
 
 import Box from '@mui/material/Box';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+
 import { DataGrid } from '@mui/x-data-grid';
+import { GridActionsCellItem } from '@mui/x-data-grid';
 import { GridColDef } from '@mui/x-data-grid';
 import { GridComparatorFn } from '@mui/x-data-grid';
+import { GridRowId } from '@mui/x-data-grid';
 import { GridToolbarQuickFilter } from '@mui/x-data-grid';
 
 import { BuildingPermit } from './Data';
@@ -26,9 +30,14 @@ type BuildingPermitsTableData = {
 
 type BuildingPermitsTableProps = {
   data: BuildingPermitsTableData;
+  showOnMapHandler?: (id: string) => void;
 };
 
-const BuildingPermitsTable = ({ data }: BuildingPermitsTableProps) => {
+const BuildingPermitsTable = ({ data, showOnMapHandler }: BuildingPermitsTableProps) => {
+
+  const handleShowOnMapClick = (id: GridRowId) => () => {
+    showOnMapHandler?.(id as string);
+  };
 
   const columns: GridColDef[] = [
     {
@@ -42,6 +51,18 @@ const BuildingPermitsTable = ({ data }: BuildingPermitsTableProps) => {
       headerName: 'Обект', 
       flex: 90
     },
+    {
+      field: 'actions', 
+      type: 'actions', 
+      getActions: ({ id }) => [(
+        <GridActionsCellItem
+          key="show_on_map"
+          icon={<LocationOnIcon />}
+          label="Покажи на картата"
+          sx={{ color: 'primary.main' }}
+          onClick={handleShowOnMapClick(id)}
+        />
+      )]}
   ];
 
   return (

@@ -12,9 +12,10 @@ type BuildingPermitsMapData = {
 
 type BuildingPermitsMapProps = {
   data: BuildingPermitsMapData;
+  zoomTo?: string;
 };
 
-const BuildingPermitsMap = ({ data }: BuildingPermitsMapProps) => (
+const BuildingPermitsMap = ({ data, zoomTo }: BuildingPermitsMapProps) => (
   <div id="map">
     <MapContainer center={[43.2073873, 27.9166653]} zoom={12} scrollWheelZoom={true} zoomControl={false}>
       <ZoomControl position={'topright'} />
@@ -27,6 +28,7 @@ const BuildingPermitsMap = ({ data }: BuildingPermitsMapProps) => (
           key={permit.id}
           permit={permit}
           coordinates={data.coordinates[permit.propertyId]}
+          openPopup={zoomTo === permit.id}
         />
       ))}
     </MapContainer>

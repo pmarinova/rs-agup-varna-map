@@ -10,15 +10,17 @@ import './App.css';
 function App() {
 
   const [data, setData] = React.useState<Data>({ permits: [], coordinates: {} });
+  const [zoomToPermitId, setZoomToPermitId] = React.useState<string | undefined>();
 
   React.useEffect(() => {
     (async () => {
-      setData(await loadData());
+      const data = await loadData();
+      setData(data);
     })();
   }, []);
 
-  const mainContent = <BuildingPermitsMap data={data} />;
-  const drawerContent = <BuildingPermitsTable data={data} />;
+  const mainContent = <BuildingPermitsMap data={data} zoomTo={zoomToPermitId} />;
+  const drawerContent = <BuildingPermitsTable data={data} showOnMapHandler={setZoomToPermitId}/>;
 
   return (
     <AppLayout 
