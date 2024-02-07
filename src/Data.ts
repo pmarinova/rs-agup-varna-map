@@ -26,8 +26,8 @@ type Data = {
 async function loadData(): Promise<Data> {
   let permits: BuildingPermit[] = [];
   let coordinates: PropertyCoordinates = {};
-  const YEAR_FROM = 2022;
-  const YEAR_TO = 2023;
+  const YEAR_FROM = 2020;
+  const YEAR_TO = 2024;
   for (let year = YEAR_FROM; year <= YEAR_TO; year++) {
     permits = [ ...permits, ...(await loadBuildingPermits(year)) ];
     coordinates = { ...coordinates, ...(await loadPropertyCoordinates(year)) };
