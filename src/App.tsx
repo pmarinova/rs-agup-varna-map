@@ -12,8 +12,9 @@ function App() {
   const [data, setData] = React.useState<Data>({ permits: [], coordinates: {} });
 
   React.useEffect(() => {
-    const load = async () => { setData(await loadData()); };
-    load();
+    (async () => {
+      setData(await loadData());
+    })();
   }, []);
 
   const mainContent = <BuildingPermitsMap data={data} />;
