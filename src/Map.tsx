@@ -22,7 +22,7 @@ const BuildingPermitsMap = ({ data }: BuildingPermitsMapProps) => (
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {data.permits.map((permit) => (
+      {data.permits.filter((permit) => data.coordinates[permit.propertyId]).map((permit) => (
         <BuildingPermitMarker
           key={permit.id}
           permit={permit}

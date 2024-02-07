@@ -18,14 +18,31 @@ type BuildingPermit = {
   description: string;
 };
 
-async function loadBuildingPermits() {
-  const res = await fetch(process.env.PUBLIC_URL + '/data/building_permits.json');
+type Data = {
+  permits: BuildingPermit[];
+  coordinates: PropertyCoordinates;
+}
+
+async function loadData(): Promise<Data> {
+  let permits: BuildingPermit[] = [];
+  let coordinates: PropertyCoordinates = {};
+  const YEAR_FROM = 2022;
+  const YEAR_TO = 2023;
+  for (let year = YEAR_FROM; year <= YEAR_TO; year++) {
+    permits = [ ...permits, ...(await loadBuildingPermits(year)) ];
+    coordinates = { ...coordinates, ...(await loadPropertyCoordinates(year)) };
+  }
+  return { permits, coordinates };
+}
+
+async function loadBuildingPermits(year: number) {
+  const res = await fetch(process.env.PUBLIC_URL + `/data/${year}/building_permits.json`);
   const permits = await res.json() as BuildingPermit[];
   return permits;
 }
 
-async function loadPropertyCoordinates() {
-  const res = await fetch(process.env.PUBLIC_URL + '/data/geo_coordinates.json');
+async function loadPropertyCoordinates(year: number) {
+  const res = await fetch(process.env.PUBLIC_URL + `/data/${year}/geo_coordinates.json`);
   const coordinates = await res.json() as PropertyCoordinates;
   return coordinates;
 }
@@ -33,10 +50,10 @@ async function loadPropertyCoordinates() {
 export type {
   Coordinates,
   PropertyCoordinates,
-  BuildingPermit
+  BuildingPermit,
+  Data
 };
 
 export {
-  loadBuildingPermits,
-  loadPropertyCoordinates
+  loadData
 };

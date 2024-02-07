@@ -1,26 +1,19 @@
 import React from 'react';
 
 import { AppLayout } from './AppLayout';
-import { loadBuildingPermits, loadPropertyCoordinates } from './Data';
-import { BuildingPermitsMap, BuildingPermitsMapData } from './Map';
+import { Data, loadData } from './Data';
+import { BuildingPermitsMap } from './Map';
 import { BuildingPermitsTable } from './Table';
 
 import './App.css';
 
 function App() {
 
-  const [data, setData] = React.useState<BuildingPermitsMapData>({ permits: [], coordinates: {} });
+  const [data, setData] = React.useState<Data>({ permits: [], coordinates: {} });
 
   React.useEffect(() => {
-    const loadData = async () => {
-      const buildingPermits = await loadBuildingPermits();
-      const propertyCoordinates = await loadPropertyCoordinates();
-      setData({
-        permits: buildingPermits.filter(permit => propertyCoordinates[permit.propertyId]),
-        coordinates: propertyCoordinates
-      });
-    };
-    loadData();
+    const load = async () => { setData(await loadData()); };
+    load();
   }, []);
 
   const mainContent = <BuildingPermitsMap data={data} />;
