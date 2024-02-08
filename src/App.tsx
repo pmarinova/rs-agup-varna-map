@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useDebounce } from 'use-debounce';
+
 import { AppLayout } from './AppLayout';
 import { Data, loadData } from './Data';
 import { BuildingPermitsMap } from './Map';
@@ -11,6 +13,9 @@ function App() {
 
   const [data, setData] = React.useState<Data>({ permits: [], coordinates: {} });
   const [zoomToPermitId, setZoomToPermitId] = React.useState<string | undefined>();
+  const [filteredIds, setFilteredIds] = React.useState<string[] | undefined>(undefined);
+
+  const [filteredPermits] = useDebounce(filteredIds, 1000);
 
   React.useEffect(() => {
     (async () => {
@@ -19,8 +24,19 @@ function App() {
     })();
   }, []);
 
-  const mainContent = <BuildingPermitsMap data={data} zoomTo={zoomToPermitId} />;
-  const drawerContent = <BuildingPermitsTable data={data} showOnMapHandler={setZoomToPermitId}/>;
+  const mainContent = 
+    <BuildingPermitsMap 
+      data={data} 
+      zoomTo={zoomToPermitId} 
+      filteredPermits={filteredPermits} 
+    />;
+  
+  const drawerContent = 
+    <BuildingPermitsTable 
+      data={data} 
+      showOnMapHandler={setZoomToPermitId} 
+      onDataFilterChange={setFilteredIds} 
+    />;
 
   return (
     <AppLayout 

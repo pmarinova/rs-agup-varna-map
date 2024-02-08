@@ -9,6 +9,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { GridComparatorFn } from '@mui/x-data-grid';
 import { GridRowId } from '@mui/x-data-grid';
 import { GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { useGridApiRef, gridFilteredSortedRowIdsSelector } from '@mui/x-data-grid';
 
 import { BuildingPermit } from './Data';
 
@@ -31,9 +32,26 @@ type BuildingPermitsTableData = {
 type BuildingPermitsTableProps = {
   data: BuildingPermitsTableData;
   showOnMapHandler?: (id: string) => void;
+  onDataFilterChange?: (ids: string[]) => void;
 };
 
-const BuildingPermitsTable = ({ data, showOnMapHandler }: BuildingPermitsTableProps) => {
+const BuildingPermitsTable = ({ data, showOnMapHandler, onDataFilterChange }: BuildingPermitsTableProps) => {
+
+  const gridApiRef = useGridApiRef();
+
+  React.useEffect(() => {
+    let unsubscribe: () => void;
+    const handleStateChange = () => {
+      unsubscribe?.();
+      const filteredIds = gridFilteredSortedRowIdsSelector(gridApiRef) as string[];
+      onDataFilterChange?.(filteredIds);
+      unsubscribe?.();
+    };
+    return gridApiRef.current.subscribeEvent?.(
+      'filterModelChange',
+      () => (unsubscribe = gridApiRef.current.subscribeEvent('stateChange', handleStateChange))
+    );
+  }, [gridApiRef]);
 
   const handleShowOnMapClick = (id: GridRowId) => () => {
     showOnMapHandler?.(id as string);
@@ -67,6 +85,7 @@ const BuildingPermitsTable = ({ data, showOnMapHandler }: BuildingPermitsTablePr
 
   return (
     <DataGrid
+      apiRef={gridApiRef}
       columns={columns}
       rows={data.permits}
       density="compact"

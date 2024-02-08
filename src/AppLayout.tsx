@@ -86,7 +86,7 @@ const AppLayout = ({ mainContent, drawerContent }: AppLayoutProps) => {
       <FloatingButton color="primary" aria-label="filter" onClick={toggleDrawer}>
         <FilterAltIcon />
       </FloatingButton>
-      <Drawer anchor="bottom" open={drawerOpen} onClose={toggleDrawer}>
+      <Drawer anchor="bottom" open={drawerOpen} onClose={toggleDrawer} keepMounted>
         <Box sx={{ height: '40vh' }}>
           {drawerContent}
         </Box>
