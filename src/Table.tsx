@@ -39,6 +39,8 @@ const BuildingPermitsTable = ({ data, showOnMapHandler, onDataFilterChange }: Bu
 
   const gridApiRef = useGridApiRef();
 
+  // Subscribe for filtered rows changes and execute onDataFilterChange() callback
+  // See https://github.com/mui/mui-x/issues/1106#issuecomment-1435752062
   React.useEffect(() => {
     let unsubscribe: () => void;
     const handleStateChange = () => {
