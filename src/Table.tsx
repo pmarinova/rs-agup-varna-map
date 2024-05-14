@@ -67,15 +67,9 @@ const BuildingPermitsTable = ({ data, showOnMapHandler, onDataFilterChange }: Bu
       sortComparator: permitIdComparator
     },
     {
-      field: 'date',
-      headerName: 'Година',
-      flex: 8,
-      valueGetter: (params) => new Date(params.value).getFullYear()
-    },
-    {
       field: 'description', 
       headerName: 'Обект', 
-      flex: 82
+      flex: 90
     },
     {
       field: 'actions', 
