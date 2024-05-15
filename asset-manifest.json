@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/rs-agup-varna-map/static/css/main.41fe15bd.css",
-    "main.js": "/rs-agup-varna-map/static/js/main.dfce7721.js",
+    "main.js": "/rs-agup-varna-map/static/js/main.40b863d9.js",
     "static/media/roboto-latin-500-normal.woff2": "/rs-agup-varna-map/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
     "static/media/roboto-latin-700-normal.woff2": "/rs-agup-varna-map/static/media/roboto-latin-700-normal.227c93190fe7f82de3f8.woff2",
     "static/media/roboto-latin-400-normal.woff2": "/rs-agup-varna-map/static/media/roboto-latin-400-normal.b009a76ad6afe4ebd301.woff2",
@@ -60,10 +60,10 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/rs-agup-varna-map/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/rs-agup-varna-map/index.html",
     "main.41fe15bd.css.map": "/rs-agup-varna-map/static/css/main.41fe15bd.css.map",
-    "main.dfce7721.js.map": "/rs-agup-varna-map/static/js/main.dfce7721.js.map"
+    "main.40b863d9.js.map": "/rs-agup-varna-map/static/js/main.40b863d9.js.map"
   },
   "entrypoints": [
     "static/css/main.41fe15bd.css",
-    "static/js/main.dfce7721.js"
+    "static/js/main.40b863d9.js"
   ]
 }
