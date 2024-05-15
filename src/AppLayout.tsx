@@ -6,6 +6,8 @@ import Container from '@mui/material/Container';
 import Drawer from '@mui/material/Drawer';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -42,16 +44,33 @@ const FloatingButton = styled(Fab)(({ theme }) => ({
 }));
 
 
+type MenuProps = {
+  items: React.ReactNode[];
+  onSelected?: (item: React.ReactNode) => void;
+};
+
 type AppLayoutProps = {
   mainContent: React.ReactNode;
   drawerContent: React.ReactNode;
+  menu: MenuProps;
 };
 
-const AppLayout = ({ mainContent, drawerContent }: AppLayoutProps) => {
+const AppLayout = ({ mainContent, drawerContent, menu }: AppLayoutProps) => {
 
   const appBarHeight = useAppBarHeight();
-  
+
+  const [menuButton, setMenuButton] = React.useState<null | HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+  const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuButton(event.currentTarget);
+    setMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
 
   const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (event.type === 'keydown' &&
@@ -68,13 +87,28 @@ const AppLayout = ({ mainContent, drawerContent }: AppLayoutProps) => {
       <AppBar position="static">
         <Toolbar>
           <IconButton
-            color="inherit"
+            onClick={openMenu}
             aria-label="menu"
+            color="inherit"
             edge="start"
             sx={{ marginRight: 2 }}
           >
             <MenuIcon />
           </IconButton>
+          <Menu
+            anchorEl={menuButton}
+            open={menuOpen}
+            onClose={closeMenu}
+            MenuListProps={{
+              'aria-labelledby': 'menu',
+            }}
+          >
+            {menu.items.map((menuItem, index) => 
+              <MenuItem key={index} onClick={() => { menu.onSelected?.(menuItem); closeMenu(); }}>
+                {menuItem}
+              </MenuItem>
+            )}
+          </Menu>
           <Typography variant="h6" noWrap component="div">
             {document.title}
           </Typography>
@@ -95,5 +129,5 @@ const AppLayout = ({ mainContent, drawerContent }: AppLayoutProps) => {
   );
 };
 
-export type { AppLayoutProps };
+export type { AppLayoutProps, MenuProps };
 export { AppLayout };
