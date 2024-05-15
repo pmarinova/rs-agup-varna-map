@@ -9,12 +9,14 @@ import { BuildingPermitsTable } from './Table';
 import { LoadingOverlay } from './LoadingOverlay';
 
 import './App.css';
+import { ErrorAlert } from './ErrorAlert';
 
 function App() {
 
   const YEARS = [2024, 2023, 2022, 2021, 2020];
 
   const [isLoading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
   const [year, setYear] = React.useState<number>(YEARS[0]);
   const [data, setData] = React.useState<Data>({ permits: [], coordinates: {} });
   const [zoomToPermitId, setZoomToPermitId] = React.useState<string | undefined>();
@@ -24,11 +26,17 @@ function App() {
 
   React.useEffect(() => {
     (async () => {
-      document.title = `Карта на разрешенията за строеж на АГУП Варна за ${year}г.`;
       setLoading(true);
-      const data = await loadData(year);
-      setLoading(false);
-      setData(data);
+      try {
+        const data = await loadData(year);
+        setData(data);
+        document.title = `Карта на разрешенията за строеж на АГУП Варна за ${year}г.`;
+      } catch (e) {
+        console.log(e);
+        setError('Възникна грешка при зареждането на данните');
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [year]);
 
@@ -59,6 +67,7 @@ function App() {
         menu={menu}
       />
       <LoadingOverlay loading={isLoading} />
+      <ErrorAlert error={error} />
     </>
   );
 }
