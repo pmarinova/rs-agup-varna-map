@@ -9,7 +9,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { GridComparatorFn } from '@mui/x-data-grid';
 import { GridRowId } from '@mui/x-data-grid';
 import { GridToolbarQuickFilter } from '@mui/x-data-grid';
-import { useGridApiRef, gridFilteredSortedRowIdsSelector } from '@mui/x-data-grid';
+import { useGridApiRef, gridFilterModelSelector, gridFilteredSortedRowIdsSelector } from '@mui/x-data-grid';
 
 import { BuildingPermit } from './Data';
 
@@ -32,27 +32,28 @@ type BuildingPermitsTableData = {
 type BuildingPermitsTableProps = {
   data: BuildingPermitsTableData;
   showOnMapHandler?: (id: string) => void;
-  onDataFilterChange?: (ids: string[]) => void;
+  onDataFilterChange?: (ids: string[] | undefined) => void;
 };
 
 const BuildingPermitsTable = ({ data, showOnMapHandler, onDataFilterChange }: BuildingPermitsTableProps) => {
 
   const gridApiRef = useGridApiRef();
 
-  // Subscribe for filtered rows changes and execute onDataFilterChange() callback
-  // See https://github.com/mui/mui-x/issues/1106#issuecomment-1435752062
   React.useEffect(() => {
-    let unsubscribe: () => void;
-    const handleStateChange = () => {
-      unsubscribe?.();
-      const filteredIds = gridFilteredSortedRowIdsSelector(gridApiRef) as string[];
-      onDataFilterChange?.(filteredIds);
-      unsubscribe?.();
+    
+    const handleFilteredRowsChange = () => { 
+      const filterModel = gridFilterModelSelector(gridApiRef);
+      if (!filterModel.items.length && !filterModel.quickFilterValues?.length) {
+        onDataFilterChange?.(undefined); // no filter
+      } else {
+        const filteredRowIds = gridFilteredSortedRowIdsSelector(gridApiRef) as string[];
+        onDataFilterChange?.(filteredRowIds);
+      }
     };
-    return gridApiRef.current.subscribeEvent?.(
-      'filterModelChange',
-      () => (unsubscribe = gridApiRef.current.subscribeEvent('stateChange', handleStateChange))
-    );
+    
+    gridApiRef.current.subscribeEvent?.('rowsSet', handleFilteredRowsChange);
+    gridApiRef.current.subscribeEvent?.('filteredRowsSet', handleFilteredRowsChange);
+  
   }, [gridApiRef]);
 
   const handleShowOnMapClick = (id: GridRowId) => () => {
